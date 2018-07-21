@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js demo-5">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+		<title>Xiaomin Chen</title>
+		<meta name="description" content="Bookblock: A Content Flip Plugin - Demo 5" />
+		<meta name="keywords" content="javascript, jquery, plugin, css3, flip, page, 3d, booklet, book, perspective" />
+		<meta name="author" content="Codrops" />
+		<link rel="shortcut icon" href="../favicon.ico"> 
+		<link rel="stylesheet" type="text/css" href="css/default.css" />
+		<link rel="stylesheet" type="text/css" href="css/bookblock.css" />
+		<!-- custom demo style -->
+		<link rel="stylesheet" type="text/css" href="css/demo5.css" />
+		<link rel="stylesheet" type="text/css" href="css/styles.css" />
+		<script src="js/modernizr.custom.js"></script>
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.4.13/d3.min.js"></script>
+		<style>
+			body {
+			  font: 15px "Arcon Regular";
+			}
+
+			.d3 {
+			  font-size: 10px;
+			}
+
+			.axis path,
+			.axis line {
+			  fill: none;
+			  stroke: #000;
+			  shape-rendering: crispEdges;
+			}
+
+			.float-left{
+				float: left;
+			}
+
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="main clearfix">
+				<ul class="bb-custom-grid" id="bb-custom-grid">
+					<li>
+						<!-- <h3>Neonmob set</h3> -->
+						<div class="bb-bookblock">
+							<div class="bb-item">
+								<div><img src="images/title.png" alt=“Title" style="width:100%; "></div>
+								<div>
+									<img src="images/cover.png" 
+									style="width:100%;">
+								</div>
+
+							</div>
+							<div class="bb-item content">
+								<h2>Number of Steps</h2>						
+								<p>My weekly schedule remains pretty much the same with my daily life revolving around school and work. The Diverging Stack chart is used to show the relationship between each "Days of the Week."
+								</p>																
+								<div id="figure" class="float-left d3" style="margin-bottom: 50px;"></div>
+							</div>
+
+							<div class="bb-item content">
+								<h2>Weekly Steps</h2>
+								<p>Unfortunately, my schedule may change on holidays. When there are breaks, I tend to go shopping or work instead. Therefore, I also use a pie chart to give an overview of this entire semester. All the portions of the pie look similar, but if I check closely, the 4 days (Tues, Thurs, Fri, Sun) that I have classes actually have the highest percentage of steps. For the days which I don't have school, I either work or study at a fixed location.</p>
+								<iframe id="dv-d6c9431512682811537" src="https://s3.amazonaws.com/datavisual/embeds/a4c6689325.html" style="height:400px; max-width:700px; width:100%; border: 0px; overflow: hidden" scrolling="no"></iframe>
+								<script src="http://datavisu.al/js/lazyLoad.js#!dv-d6c9431512682811537,a4c6689325.html"></script>
+							</div>
+
+							<div class="bb-item content">
+								<h2>Screen Time</h2>
+								<p>Looking at the chart, I use my phone nearly one third of the time. However, if I don't count</br> the time that I am asleep (8hrs), I literally use my phone for half of my daytime. My screen time drops when it's toward the end of the semester, starting week 11 because of final projects.</p>
+								<div>
+									<iframe id="dv-d6c4d41512662168086" src="https://s3.amazonaws.com/datavisual/embeds/c6d809f487.html" style="height:500px; max-width:940px; width:100%; border: 0px; overflow: hidden" scrolling="no"></iframe>
+									<script src="http://datavisu.al/js/lazyLoad.js#!dv-d6c4d41512662168086,c6d809f487.html"></script>	
+								</div>
+
+							</div>
+
+							<div class="bb-item content">
+								<h2>Miles Traveled Biweekly</h2>
+								<p>The distance I traveled doesn't differ much between these weeks. But I happen to travel the least on the last two weeks dating back from Nov 13 - 26, which is approaching final projects. </p>	
+								<div>
+									<iframe id="dv-d6c9af1512687637686" src="https://s3.amazonaws.com/datavisual/embeds/96558a22a4.html" style="height:500px; max-width:940px; width:100%; border: 0px; overflow: hidden" scrolling="no"></iframe>
+									<script src="http://datavisu.al/js/lazyLoad.js#!dv-d6c9af1512687637686,96558a22a4.html"></script>			
+								</div>
+							</div>
+						</div>
+						<nav>
+							<span class="bb-current"></span>
+							<span></span>
+							<span></span>
+							<span></span>
+							<span></span>
+						</nav>
+					</li>
+				</ul>
+			</div>
+		</div><!-- /container -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="js/jquerypp.custom.js"></script>
+		<script src="js/jquery.bookblock.js"></script>
+		<script type="text/javascript">
+			var Page = (function() {
+
+				var $grid = $( '#bb-custom-grid' );
+
+				return {
+					init : function() {
+						$grid.find( 'div.bb-bookblock' ).each( function( i ) {
+							
+							var $bookBlock = $( this ),
+								$nav = $bookBlock.next().children( 'span' ),
+								bb = $bookBlock.bookblock( {
+									speed : 600,
+									shadows : false
+								} );
+								
+							// add navigation events
+							$nav.each( function( i ) {
+								$( this ).on( 'click touchstart', function( event ) {
+									var $dot = $( this );
+									$nav.removeClass( 'bb-current' );
+									$dot.addClass( 'bb-current' );
+									$bookBlock.bookblock( 'jump', i + 1 );
+									return false;
+								} );
+							} );
+							
+							// add swipe events
+							$bookBlock.children().on( {
+								'swipeleft' : function( event ) {
+									$bookBlock.bookblock( 'next' );
+									return false;
+								},
+								'swiperight' : function( event ) {
+									$bookBlock.bookblock( 'prev' );
+									return false;
+								}
+
+							} );
+							
+						} );
+					}
+				};
+
+			})();
+		</script>
+		<script>
+				Page.init();
+		</script>
+
+		<script>
+
+		var margin = {top: 50, right: 20, bottom: 10, left: 65},
+		    width = 580 - margin.left - margin.right,
+		    height = 500 - margin.top - margin.bottom;
+
+		var y = d3.scale.ordinal()
+		    .rangeRoundBands([0, height], 0.3);		//thickness of bars
+
+		var x = d3.scale.linear()
+		    .rangeRound([0, width]);				//width of bars
+
+		var color = d3.scale.ordinal()
+		    .range(["#c7001e", "#f6a580", "#cccccc", "#92c6db", "#086fad", "#A593E0", "#8CD790"]);				//bar colors
+
+		var xAxis = d3.svg.axis()
+		    .scale(x)
+		    .orient("top");							//top label to horizontal axis
+
+		var yAxis = d3.svg.axis()
+		    .scale(y)
+		    .orient("left")							//left label to vertical axis	
+
+		var svg = d3.select("#figure").append("svg")
+		    .attr("width", width + margin.left + margin.right)
+		    .attr("height", height + margin.top + margin.bottom)
+		    .attr("id", "d3-plot")
+		  	.append("g") 						//labels and legends
+		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+		  color.domain(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturaday", "Sunday"]);	//legend label
+
+		  d3.csv("resources/steps.csv", function(error, data) {
+
+		  data.forEach(function(d) {
+		    // calc percentages
+		    d["Monday"] = +d[1]*100/d.N;
+		    d["Tuesday"] = +d[2]*100/d.N;
+		    d["Wednesday"] = +d[3]*100/d.N;
+		    d["Thursday"] = +d[4]*100/d.N;
+		    d["Friday"] = +d[5]*100/d.N;
+		    d["Saturaday"] = +d[6]*100/d.N;
+		    d["Sunday"] = +d[7]*100/d.N;
+		    //var x0 = -1*(d["Wednesday"]/2+d["Tuesday"]+d["Monday"]);
+		    var x0 = 0;
+		    var idx = 0;
+		    d.boxes = color.domain().map(function(name) { return {name: name, x0: x0, x1: x0 += +d[name], N: +d.N, n: +d[idx += 1]}; });
+		  });
+
+		  var min_val = d3.min(data, function(d) {
+		          return d.boxes["0"].x0;
+		          });
+
+		  var max_val = d3.max(data, function(d) {
+		          return d.boxes["6"].x1;
+		          });
+
+		  x.domain([min_val, 100]).nice();
+		  y.domain(data.map(function(d) { return d.Question; }));
+
+		  svg.append("g")
+		      .attr("class", "x axis")
+		      .call(xAxis);
+
+		  svg.append("g")
+		      .attr("class", "y axis")
+		      .call(yAxis)
+
+		  var vakken = svg.selectAll(".question")
+		      .data(data)
+		    .enter().append("g")
+		      .attr("class", "bar")
+		      .attr("transform", function(d) { return "translate(0," + y(d.Question) + ")"; });
+
+		  var bars = vakken.selectAll("rect")
+		      .data(function(d) { return d.boxes; })
+		    .enter().append("g").attr("class", "subbar");
+
+		  bars.append("rect")
+		  	  //animation
+		  	  .attr("height", 0)
+		      .transition()
+			  .duration(1000)
+			  .ease("bounce")
+
+			  //actual bars
+		      .attr("height", y.rangeBand())
+		      .attr("x", function(d) { return x(d.x0); })
+		      .attr("width", function(d) { return x(d.x1) - x(d.x0); })
+		      .style("fill", function(d) { return color(d.name); });
+
+		  bars.append("text")
+		      .attr("x", function(d) { return x(d.x0); })
+		      .attr("y", y.rangeBand()/2)
+		      .attr("dy", "0.5em")
+		      .attr("dx", "0.25em")							//space between bar left border and text
+		      .style("font" ,"8px sans-serif")
+		      .style("text-anchor", "begin")
+		      .text(function(d) { return d.n !== 0 && (d.x1-d.x0)>3 ? d.n : "" });
+
+		  vakken.insert("rect",":first-child")
+		      .attr("height", y.rangeBand())
+		      .attr("x", "1")
+		      .attr("width", width)
+		      .attr("fill-opacity", "0.5")
+		      .style("fill", "#F5F5F5")
+		      .attr("class", function(d,index) { return index%2==0 ? "even" : "uneven"; });
+
+		  svg.append("g")
+		      .attr("class", "y axis")
+		  .append("line")
+		      .attr("x1", x(0))
+		      .attr("x2", x(0))
+		      .attr("y2", height);
+
+		  var startp = svg.append("g").attr("class", "legendbox").attr("id", "mylegendbox");
+		  // this is not nice, we should calculate the bounding box and use that
+		  //var legend_tabs = [0, 120, 200, 375, 450];
+		  var legend_tabs = [-245, -175, -105, -20, 55, 120, 200];			//location of the legends
+		  var legend = startp.selectAll(".legend")
+		      .data(color.domain().slice())
+		    .enter().append("g")
+		      .attr("class", "legend")
+		      .attr("transform", function(d, i) { return "translate(" + legend_tabs[i] + ",-45)"; });
+
+		  legend.append("rect")
+		      .attr("x", 0)
+		      .attr("width", 18)
+		      .attr("height", 18)
+		      .style("fill", color);
+
+		  legend.append("text")
+		      .attr("x", 22)
+		      .attr("y", 9)
+		      .attr("dy", ".35em")
+		      .style("text-anchor", "begin")
+		      .style("font" ,"10px sans-serif")
+		      .text(function(d) { return d; });
+
+		  d3.selectAll(".axis path")
+		      .style("fill", "none")
+		      .style("stroke", "#000")
+		      .style("shape-rendering", "crispEdges")
+
+		  d3.selectAll(".axis line")
+		      .style("fill", "none")
+		      .style("stroke", "#000")
+		      .style("shape-rendering", "crispEdges")
+
+		  var movesize = width/2 - startp.node().getBBox().width/2;
+		  d3.selectAll(".legendbox").attr("transform", "translate(" + movesize  + ",0)");
+
+		});
+		</script>		
+	</body>
+</html>
