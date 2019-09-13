@@ -1,4 +1,6 @@
 # Step-Counting-and-Screen-Time
+[View Application](http://xiaomin-chen.com/coding-project/step-counting/step-counting.html)
+
 Using javascript's library D3 to show personal step counting and screen time during the fall 2017 semester.
 Python's simple http server is used to run this D3 project on localhost.
 
